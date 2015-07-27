@@ -17,3 +17,6 @@ Java7 et MySQL (base utilisée par défaut)
 
 # Installation
 Suivre les _readme_ des 2 projets
+
+# Screenshot
+![Image of Yaktocat](http://lagrede.alwaysdata.net/site_media/github/aurelia-spring-app/aurelia-spring-app-screenshot.png)

@@ -20,3 +20,33 @@ Suivre les _readme_ des 2 projets
 
 # Screenshot
 ![Image of Yaktocat](http://lagrede.alwaysdata.net/site_media/github/aurelia-spring-app/aurelia-spring-app-screenshot.png)
+
+
+
+# Déploiement 
+Exemple de configuration apache
+```
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName monserveur.ddns.net
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    LogLevel warn
+
+    #ServerPath /app
+    DocumentRoot /var/www/aurelia
+
+     ProxyPass /spring-server http://localhost:8080/spring-server
+
+     ProxyRequests Off
+     ProxyPreservehost on
+     
+     <Proxy>
+         Order Allow,Deny
+         Allow from all
+     </Proxy>
+
+</VirtualHost>
+```

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- 
+		=================================================
+			Multi tenant configuration
+		======================================================
+	 -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:persistence-unit-name="spring-template-domain">
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.generation.strategy}</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				
+				<!-- <prop key="hibernate.multiTenancy">DATABASE</prop> -->
+				<!-- <prop key="hibernate.multi_tenant_connection_provider">fr.bl.template.ui.util.multitenant.DatabaseMultiTenantConnectionProvider</prop> -->
+				
+				<prop key="hibernate.multiTenancy">SCHEMA</prop>
+				<prop key="hibernate.multi_tenant_connection_provider">fr.bl.template.ui.util.multitenant.SchemaMultiTenantConnectionProvider</prop>
+				
+				<prop key="hibernate.tenant_identifier_resolver">fr.bl.template.ui.util.multitenant.CurrentTenantResolver</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		p:entityManagerFactory-ref="entityManagerFactory" />
+
+
+	<tx:annotation-driven />
+
+
+</beans>

@@ -1,0 +1,125 @@
+        html,body{min-height: 280px; height:100%;background-color:transparent!important;}
+
+        html  {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color:black;
+
+            background-image:  
+                  url("../img/login/symbole.png"),
+                  url("../img/login/trame.png"),
+                  url("../img/login/connexion_background_sante.png");
+
+            background-repeat: no-repeat;
+            background-position: top left, bottom left, top left;
+            
+            -webkit-background-size:   1000px, 800px, cover;
+            -moz-background-size:   1000px, 800px, cover;
+            -o-background-size:   1000px, 800px, cover;
+            background-size:   1000px, 800px, cover;
+
+        }
+
+        html.theme1 {
+            background-image:  
+                  url("../img/login/symbole.png"),
+                  url("../img/login/trame.png"),
+                  url("../img/login/connexion_background_theme1.png");
+        }
+        html.theme2 {
+            background-image:  
+                  url("../img/login/symbole.png"),
+                  url("../img/login/trame.png"),
+                  url("../img/login/connexion_background_theme2.png");
+        }
+        html.theme3 {
+            background-image:  
+                  url("../img/login/symbole.png"),
+                  url("../img/login/trame.png"),
+                  url("../img/login/connexion_background_theme3.png");
+        }
+
+        .full {
+            height: 100%!important;
+        }
+        .band {
+            background-color:#406274;
+        }
+        .form-signin-heading {
+            text-align: center;
+            font-size: 2.8em;
+            color: white;
+        }
+        .form-signin-description {
+            text-align: center;
+        }
+
+      
+        .form-signin h2,
+        .form-signin p,
+        .form-signin label  {
+            color:white;
+        }
+        .vertical-align {
+            /*display: flex;
+            align-items: center;*/
+
+          position: relative;
+          top: 40%;
+           -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);      
+        }
+
+        .vertical-top-align {
+            /*display: flex;
+            align-items: center;*/
+
+          position: relative;
+          top: 35%;
+           -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);      
+        }
+
+        .btn2:hover, .btn2:focus {
+        background-color: #2e4653!important;
+        }
+
+        .btn2 {
+            border-radius: 0px!important;
+            border: 1px solid white!important;
+            background-color: transparent!important;
+        }
+        .btn:hover, .btn:focus {
+            background-color: #2e4653!important;
+        }
+
+        .footer{
+            float: right;
+            position: absolute;
+            bottom:50px;
+            padding-right: 10px!important;
+        }
+
+        .form-signin input {
+          margin-bottom: 15px;
+        }
+      
+
+        @media screen and (max-height: 445px) {
+          .footer {
+            display:none;
+          }
+        }
+
+
+        .white-color {
+          color:white;
+        }
+        .white-color:hover {
+          color:#e6e9ee;
+          text-decoration: underline;
+        }

@@ -1,0 +1,5 @@
+
+En suivant ce lien vous allez réinitialiser votre mot de passe. Un nouveau sera automatiquement généré puis envoyé par email.
+<br>
+${resetlink}
+

@@ -1,0 +1,89 @@
+<template>
+
+  <div class="box box-primary">
+      <div class="box-body">
+
+          <div class="box-header">
+              <h2 class="box-title">${heading}</h2>
+          </div>
+
+          <form role="form" autocomplete="off" submit.delegate="addUser()">
+
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input id="username" type="text" value.bind="user.username" class="form-control" placeholder="username">
+            </div>
+            <div class="form-group" if.bind="password == ''">
+              <label for="password">Password</label>
+              <input id="password" type="password" value.bind="user.password" class="form-control">
+            </div>
+            <div class="form-group" if.bind="password != ''">
+              <a click.delegate="showPopupPassword()"><i class="fa fa-key"></i> modifier le password</a>
+            </div>
+
+            <div class="form-group">
+              <label for="firstname">First Name</label>
+              <input type="text" value.bind="user.firstname" class="form-control" id="firstname" placeholder="first name">
+            </div>
+            <div class="form-group">
+              <label for="lastname">Last Name</label>
+              <input type="text" value.bind="user.lastname" class="form-control" id="lastname" placeholder="last name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" value.bind="user.email" class="form-control" id="email" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+              <label for="groups">Groups</label>
+              <select value.bind="user.selectedGroups2" class="form-control" multiple>
+                  <option repeat.for="group of groupscombo" value.bind="group.id">${group.name}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="permissions">Permissions</label>
+              <select value.bind="user.selectedPermissions2" class="form-control" multiple>
+                  <option repeat.for="permission of permissionscombo" value.bind="permission.id">${permission.name}</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Appliquer</button>
+
+          </form>
+
+     </div>
+   </div>
+
+   <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fermer</span></button>
+                    <h4 class="modal-title" id="myModalLabel">${headingModal}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form role="form" submit.delegate="editPassword()">
+
+                      <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" value.bind="command.password" class="form-control">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="confirmpassword">Confirm password</label>
+                        <input id="confirmpassword" type="password" value.bind="command.confirmPassword" class="form-control">
+                      </div>
+
+                      <button type="submit" class="btn btn-primary">Modifier</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+

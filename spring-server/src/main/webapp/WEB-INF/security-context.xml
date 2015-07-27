@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:sec="http://www.springframework.org/schema/security" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+
+	
+	<mvc:view-controller path="/ws/about" view-name="about/about"/>
+	<mvc:view-controller path="/ws/about/licences" view-name="about/licences/licence"/>
+
+	<sec:http pattern="/static/**" security="none" />
+
+
+	
+    <sec:http auto-config="true" pattern="/ws/**" use-expressions="true" create-session="stateless" entry-point-ref="restServicesEntryPoint">
+	    <sec:intercept-url pattern="/login*" access="permitAll"/>
+	    <sec:intercept-url pattern="/resetPassword*" access="permitAll"/>
+	    <sec:intercept-url pattern="/reinitPassword*" access="permitAll"/>
+	    <sec:intercept-url pattern="/about*" access="permitAll"/>
+ 	    <sec:intercept-url pattern="/**" access="permitAll" />
+	    <!-- <sec:intercept-url pattern="/**" access="isAnonymous()" />  -->
+	
+   		<sec:custom-filter before="FORM_LOGIN_FILTER" ref="statelessLoginFilter" /><!-- StatelessLoginFilter("/api/login", tokenAuthenticationService, userDetailsService, authenticationManager()) -->
+		<sec:custom-filter after="FORM_LOGIN_FILTER" ref="statelessAuthenticationFilter" /><!-- new StatelessAuthenticationFilter(tokenAuthenticationService) -->
+    </sec:http>
+
+ 	<bean id="restServicesEntryPoint" class="fr.bl.template.ui.util.security.spring.Http401UnauthorizedEntryPoint" />
+ 
+ 	<bean id="statelessAuthenticationFailureHandler" class="fr.bl.template.ui.util.security.spring.StatelessAuthenticationFailureHandler" />
+ 
+ 	<bean id="statelessAuthenticationFilter" class="fr.bl.template.ui.util.filter.StatelessAuthenticationFilter">
+ 		<constructor-arg index="0" ref="tokenAuthenticationService" />
+ 	</bean>
+ 
+ 	<bean id="statelessLoginFilter" class="fr.bl.template.ui.util.filter.StatelessLoginFilter">
+ 		<constructor-arg index="0" value="/ws/login" />
+ 		<constructor-arg index="1" ref="tokenAuthenticationService" />
+ 		<constructor-arg index="2" ref="customUserDetailsService" />
+ 		<constructor-arg index="3" ref="authenticationManager" />
+ 		<constructor-arg index="4" ref="statelessAuthenticationFailureHandler" />
+ 	</bean>
+
+	<bean id="tokenAuthenticationService" class="fr.bl.template.ui.auth.service.TokenAuthenticationService">
+ 		<constructor-arg index="0" value="${token.secret:123456}" />
+ 	</bean>
+ 
+ 
+ 
+ 	<!-- DOCUMENTATION
+	 Expression	Description:
+	 hasRole([role])	Returns true if the current principal has the specified role.
+	 hasAnyRole([role1,role2])	Returns true if the current principal has any of the supplied roles (given as a comma-separated list of strings)
+	 principal	Allows direct access to the principal object representing the current user
+	 authentication	Allows direct access to the current Authentication object obtained from the SecurityContext
+	 permitAll	Always evaluates to true
+	 denyAll	Always evaluates to false
+	 isAnonymous()	Returns true if the current principal is an anonymous user
+	 isRememberMe()	Returns true if the current principal is a remember-me user
+	 isAuthenticated()	Returns true if the user is not anonymous
+	 isFullyAuthenticated()	Returns true if the user is not an anonymous or a remember-me user
+ 	-->
+
+	<!-- 
+    	In Memory authentication
+	<sec:authentication-manager>
+	  <sec:authentication-provider>
+	    <sec:user-service>
+			<sec:user name="tony" password="123456" authorities="ROLE_USER" />
+			<sec:user name="flo" password="123456" authorities="ROLE_USER" />
+			<sec:user name="admin" password="123456" authorities="ROLE_ADMIN" />
+	    </sec:user-service>
+	  </sec:authentication-provider>
+	</sec:authentication-manager>
+    -->
+
+	<!-- AES password encoder  -->
+	<!-- 
+	<bean id="authenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+      <property name="passwordEncoder">
+        <bean class="fr.bl.template.ui.util.security.spring.AESPasswordEncoder" />
+      </property>
+      <property name="userDetailsService" ref="userService" />
+    </bean>
+	 -->
+
+
+	<!--
+	You can generate the user password like this
+	 
+	String password = "p4ssword";
+	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	String encodedPassword = passwordEncoder.encode(password);
+	 -->	
+	<bean id='encoder' class='org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'/>
+
+	<sec:authentication-manager alias="authenticationManager">
+	  <sec:authentication-provider user-service-ref="customUserDetailsService">
+	          <sec:password-encoder ref="encoder"/>
+	  </sec:authentication-provider>
+	</sec:authentication-manager>
+    
+</beans>

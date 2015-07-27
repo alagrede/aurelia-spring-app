@@ -1,0 +1,71 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+<!-- 
+	<import resource="classpath*:domain-context-multitenant.xml" />
+ -->
+	<import resource="classpath*:dataSource.xml" />
+	<import resource="classpath*:domain-context.xml" />
+	
+
+
+	
+	
+	<!-- multipart file upload  -->   
+	  <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+           <property name="maxUploadSize" value="104857600"/>  
+           <property name="maxInMemorySize" value="4096"/>  
+	  </bean>
+
+
+	<!-- Properties -->
+	<bean
+		class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="false" />
+		<property name="ignoreUnresolvablePlaceholders" value="false" />
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>	
+
+	<bean id="messageSource" class="fr.bl.template.ui.util.properties.WildcardReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>fr.bl.messages.messages</value>
+				<value>classpath:/fr/bl/messages/**/i18n*</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="ISO-8859-15" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+		<property name="cacheSeconds" value="1" />
+		
+	</bean>
+  	
+	 <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+		<!-- Pour charger les templates depuis le classpath -->
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+ 			<!-- Pour charger les templates depuis un répertoire extérieure 
+            <value>
+                file.resource.loader.path=${velocity.template.dir}
+                file.resource.loader.cache=${velocity.cache}
+                file.resource.loader.modificationCheckInterval=${velocity.modificationCheckInterval}
+            </value>
+ 			-->
+
+        </property>
+    </bean>
+	
+</beans>

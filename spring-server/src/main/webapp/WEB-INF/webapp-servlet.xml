@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+
+	<context:annotation-config />
+	
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- Use the HibernateAware mapper instead of the default -->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="fr.bl.template.ui.util.hibernate.HibernateAwareObjectMapper" />
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    
+    
+	
+
+	<!-- Only scan Controllers	-->
+	<context:component-scan base-package="fr.bl.template.ui">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+    <!-- SPRING - JPA -->
+    <jpa:repositories base-package="fr.bl.template.ui" />
+
+
+	<!-- Plan du site -->
+	<mvc:view-controller path="/sitemap.html" view-name="site/sitemap"/>
+
+	<!-- Pour la gestion des redirections 302 -->
+ 	<mvc:interceptors>
+      <bean class="fr.bl.template.ui.util.web.RedirectionInterceptor"></bean>
+    </mvc:interceptors> 
+	
+
+	<!-- 
+		================================================================
+		Freemarker config
+		================================================================
+	 -->
+	<bean id="freemarkerViewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".ftl" />
+		<property name="requestContextAttribute" value="requestContext" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="order" value="0" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeRequestAttributes"  value="true" />
+	</bean>
+
+	<import resource="classpath:/kr/pe/kwonnam/freemarker/inheritance/freemarker-layout-directives.xml" />
+
+	<bean id="freemarkerConfig" 
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	    <property name="templateLoaderPath" value="/WEB-INF/templates/"/>
+		<property name="defaultEncoding" value="UTF-8" />
+			
+	    <property name="freemarkerVariables">
+	        <map>
+	            <entry key="layout" value-ref="freemarkerLayoutDirectives" />
+	            <entry key="skin" value="${bl.css.skin}" />
+	        </map>
+	    </property>
+   	
+   		<property name="freemarkerSettings">
+			<props>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="output_encoding">UTF-8</prop>
+				<prop key="tag_syntax">square_bracket</prop>
+				<!-- 
+	            <prop key="auto_import">spring.ftl as spring</prop>
+				 -->
+			</props>
+			
+		</property>
+	</bean>
+	
+  
+     <!-- Exposition of a global variable for the static resources url -->
+	<bean id="servletContextAttributeExporter" class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<util:map>
+		        <entry key="staticBaseUrl" value="${static.url}" />
+		        <entry key="photoStaticBaseUrl" value="${upload.static.url}" />
+			</util:map>
+		</property>
+	</bean>
+  
+	<!--
+        Gestion des exceptions
+     -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="error" />
+	</bean>
+
+
+	<!-- 
+		configuration du Locale interceptor
+	 -->
+	<bean id="localeResolver"
+	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+	    <property name="defaultLocale" value="fr"/>
+        <property name="cookieName" value="lang" />
+	</bean>
+
+	
+	<mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/**" />
+	        <bean id="localeChangeInterceptor"
+	            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	            <property name="paramName" value="lang" />
+	        </bean>
+	    </mvc:interceptor>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/**" />
+			<bean id="themeChangeInterceptor"
+			    class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
+			    <property name="paramName" value="theme" />
+			</bean>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 
+		Configuration des thèmes
+	 -->
+	 <bean id="themeSource"
+		class="org.springframework.ui.context.support.ResourceBundleThemeSource">
+        <property name="basenamePrefix" value="theme-" />
+	</bean>
+	 
+	<bean id="themeResolver"
+	    class="org.springframework.web.servlet.theme.CookieThemeResolver">
+	    <property name="defaultThemeName" value="default" />
+	</bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="host" value="${mail.smtp.host}"/>
+        <property name="port" value="${mail.smtp.port}"/>
+        <property name="username" value="${mail.user}"/>
+        <property name="password" value="${mail.pass}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.tls}</prop>
+                <prop key="mail.debug">true</prop>
+                <!-- 
+                <prop key="mail.smtp.socketFactory.port">${mail.smtp.port}</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                 -->
+            </props>
+        </property>
+    </bean>
+	
+	<bean id="filterMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
+	    <property name="maxUploadSize" value="-1" />
+	</bean> 
+
+</beans>

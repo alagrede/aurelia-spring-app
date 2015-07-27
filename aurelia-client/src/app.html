@@ -1,0 +1,24 @@
+<template>
+    <require from='./components/nav-bar'></require>
+    <require from='./components/header-nav'></require>
+
+
+    <div id="wrapper">
+
+  		<nav-bar router.bind="router"></nav-bar>
+        <header-nav></header-nav>
+
+		<div id="page-wrapper" class="white-bg">
+	        <!-- Content de la page -->
+	        <div class="wrapper wrapper-content">
+		
+			    <div id="pagecontent">
+				    <router-view></router-view>
+				</div>	
+
+	        </div>
+        </div>
+
+    </div>
+
+</template>

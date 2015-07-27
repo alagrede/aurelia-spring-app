@@ -1,0 +1,14 @@
+<template>
+    <nav class="menu menu-y" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+
+                <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                  <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="row.href"><i class="fa ${row.settings.icon}"></i><span class="nav-label">${row.title}</span></a>
+                </li>
+            
+            </ul>
+
+        </div>
+    </nav>
+</template>

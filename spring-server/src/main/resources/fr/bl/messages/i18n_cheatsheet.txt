@@ -1,0 +1,17 @@
+Lettre Unicode HTML
+à \u00e0 &agrave;
+â \u00e2 &acirc;
+ä \u00e4 &auml;
+ç \u00e7 &ccedil;
+è \u00e8 &egrave;
+é \u00e9 &eacute;
+ê \u00ea &ecirc;
+ë \u00eb &euml;
+î \u00ee &icirc;
+ï \u00ef &iuml;
+ô \u00f4 &ocirc;
+ö \u00f6 &ouml;
+ù \u00f9 &ugrave;
+û \u00fb &ucirc;
+ü \u00fc &uuml;
+

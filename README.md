@@ -24,6 +24,14 @@ Suivre les _readme_ des 2 projets
 
 
 # Déploiement 
+Bundle de l'application aurelia
+```bash
+gulp build
+```
+```bash
+aurelia bundle
+```
+
 Exemple de configuration apache
 ```
 <VirtualHost *:80>

@@ -18,7 +18,6 @@ export class App {
       { route: 'userlist',      moduleId: './pages/authuser/authUserList', nav: true, title:'Liste utilisateurs', settings: { icon:'fa-users' }, auth: true },
       { route: 'useradd/:id',   moduleId: './pages/authuser/authUserAdd', name: "useradd", auth: true },
       { route: 'passwordedit/:id',   moduleId: './pages/authuser/passwordEdit', name: "passwordedit", auth: true },
-      { route: 'resetpassword',   moduleId: './pages/authuser/resetPassword', name: "resetpassword", auth: false },
       { route: 'about',   moduleId: './pages/about/about', name: "about", auth: true, nav:false },
       { route: 'licence',   moduleId: './pages/about/licence', name: "licence", auth: true, nav:false }
       

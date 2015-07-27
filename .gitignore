@@ -1,0 +1,14 @@
+build/
+node_modules
+jspm_packages
+bower_components
+.idea
+.DS_STORE
+/dist
+/.idea/
+/target/
+.settings/
+.classpath
+.project
+server.log
+*.iml

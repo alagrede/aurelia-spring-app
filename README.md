@@ -19,7 +19,7 @@ Java7 et MySQL (bdd utilisée par défaut)
 Suivre les _readme_ des 2 projets
 
 # Screenshot
-![Image of Yaktocat](http://lagrede.alwaysdata.net/site_media/github/aurelia-spring-app/aurelia-spring-app-screenshot.png)
+![Image of Yaktocat](http://lagrede.alwaysdata.net/aurelia-spring-app/aurelia-spring-app-screenshot.png)
 
 
 
